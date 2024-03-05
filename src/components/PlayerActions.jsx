@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Slider from '@mui/material/Slider';
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Deck from "../lib/Deck";
 
 const MIN_BET = 10;
@@ -44,32 +44,29 @@ const PlayerActions = ({
     }
 
     return (
-        <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-        }}>
-            <Box>
-                {
-                    turn == 0 ?
-                        <div>
-                            <Slider
-                                defaultValue={20}
-                                step={10}
-                                valueLabelDisplay="auto"
-                                onChange={(e) => setBetToPlace(e.target.value)}
-                                max={playerCoins}
-                                min={MIN_BET}
-                            />
-                            <button onClick={placeBet}>
-                                Bet
-                            </button>
-                        </div>
-                        :
-                        null
+        <Stack >
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                {turn == 0 ?
+                    <Stack spacing={2} direction="row" alignItems="center"  sx={{ width: 200 }}>
+                        <Slider
+                            defaultValue={20}
+                            step={10}
+                            valueLabelDisplay="auto"
+                            onChange={(e) => setBetToPlace(e.target.value)}
+                            max={playerCoins}
+                            min={MIN_BET}
+                        />
+                        <button onClick={placeBet}>
+                            Bet
+                        </button>
+                    </Stack>
+                    :
+                    null
                 }
-            </Box>
-            <Box>
                 {
                     turn == 2 ?
                         <button onClick={hit}>
@@ -86,13 +83,15 @@ const PlayerActions = ({
                         :
                         null
                 }
+
             </Box>
             <Box>
                 <button onClick={() => deck.shuffle()}>
                     Shuffle
                 </button>
             </Box>
-        </Box>
+        </Stack>
+        /*<Box>*/
     )
 }
 

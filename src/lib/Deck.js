@@ -29,6 +29,7 @@ class Card {
         this.face = face;
         this.value = value;
         this.suit = suit;
+        this.down = false;
     }
 }
 // TODO : BLACK CARD
@@ -43,6 +44,7 @@ class Deck {
                 });
             });
         }
+        // this.drawer.push(new Card('RESHUFFLE', -1, 'RESHUFFLE')); // Reshuffle card
         this.shuffle();
     }
 
@@ -67,7 +69,7 @@ class Deck {
         let score = 0;
         let hasAs = false;
         handCards.forEach(card => {
-            score += card.value;
+            score += card.down ? 0 : card.value;
             hasAs = hasAs || card.face == 'AS'
         });
         if (score > 21 && hasAs) {

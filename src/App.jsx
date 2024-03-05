@@ -9,6 +9,7 @@ import PlayerActions from './components/PlayerActions'
 import PlayerInfos from './components/PlayerInfos'
 import InformationModal from './components/InformationModal'
 import { Grid } from '@mui/material'
+import Statistics from './components/Statistics'
 
 function App() {
   const [deck, setDeck] = useState(new Deck(4));
@@ -57,10 +58,14 @@ function App() {
     if (turn == 1) {
       // Dealer draws for player
       setPlayerHand([deck.draw(), deck.draw()]);
-      setDealerHand([deck.draw(), deck.draw()]);
+      const firstDealerCard = deck.draw();
+      const secondDealerCard = deck.draw();
+      secondDealerCard.down = true;
+      setDealerHand([firstDealerCard, secondDealerCard]);
       setTurn(turn + 1);
     } else if (turn == 3) {
       let tmpDealerHand = [...dealerHand];
+      tmpDealerHand.at(1).down = false;
       while (Deck.calculateHandScore(tmpDealerHand) <= 16) {
         tmpDealerHand.push(deck.draw());
       }
@@ -111,6 +116,7 @@ function App() {
           <Hand name={"Player"} gameCards={playerHand} />
         </Grid>
         <Grid item xs={2}>
+          <Statistics deck={deck} dealerHand={dealerHand} playerHand={playerHand} />
         </Grid>
         <Grid item xs={8}>
           <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerCoins={playerCoins} setPlayerCoins={setPlayerCoins} playerHand={playerHand} setPlayerHand={setPlayerHand} />

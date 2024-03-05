@@ -32,7 +32,7 @@ const Hand = ({ name, gameCards }) => {
                                 backgroundColor: '#ccc',
                             }}
                         >
-                            {card.face + ' ' + card.suit}
+                            {card.down ? null : card.face + ' ' + card.suit}
                         </Paper>
                     ))
                 }
