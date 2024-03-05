@@ -14,25 +14,30 @@ const Hand = ({ name, gameCards }) => {
 
 
     return (
-        <Grid container>
+        <Box>
             <h3>{name}</h3>
             <p>Score : {score}</p>
-            {
-                handCards.map((card) => (
-                    <Paper
-                        key={card.face + ' ' + card.suit}
-                        elevation={1}
-                        sx={{
-                            height: 140,
-                            width: 100,
-                            backgroundColor: '#ccc',
-                        }}
-                    >
-                        {card.face + ' ' + card.suit}
-                    </Paper>
-                ))
-            }
-        </Grid >
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center'
+            }}>
+                {
+                    handCards.map((card) => (
+                        <Paper
+                            key={card.face + ' ' + card.suit}
+                            elevation={1}
+                            sx={{
+                                height: 140,
+                                width: 100,
+                                backgroundColor: '#ccc',
+                            }}
+                        >
+                            {card.face + ' ' + card.suit}
+                        </Paper>
+                    ))
+                }
+            </Box>
+        </Box >
     )
 }
 

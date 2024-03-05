@@ -93,34 +93,34 @@ function App() {
 
 
   return (
-    <>
-      <Grid
-        container
-        justifyContent="center"
-        direction="column"
-        alignItems="center"
-        spacing={3}
-      >
-        <h1>BackJack</h1>
-        {
-          isLost ? <p>No more money</p> : null
-        }
+    <div style={{ flexGrow: 1 }}>
+      <Grid container>
+        <Grid item xs={12}>
+          <h1>BackJack</h1>
+          {
+            isLost ? <p>No more money</p> : null
+          }
+        </Grid>
         <Grid
           item
           xs={12}
         >
           <Hand name={"Dealer"} gameCards={dealerHand} />
+        </Grid>
+        <Grid item xs={12}>
           <Hand name={"Player"} gameCards={playerHand} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={2}>
+        </Grid>
+        <Grid item xs={8}>
           <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerCoins={playerCoins} setPlayerCoins={setPlayerCoins} playerHand={playerHand} setPlayerHand={setPlayerHand} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={2}>
           <PlayerInfos playerCoins={playerCoins} playerBet={playerBet} deck={deck} />
         </Grid>
       </Grid>
       <InformationModal informationMessage={informationMessage} showInformationModal={showInformationModal} />
-    </>
+    </div>
   )
 }
 

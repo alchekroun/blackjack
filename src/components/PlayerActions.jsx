@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Slider from '@mui/material/Slider';
-import { Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import Deck from "../lib/Deck";
 
 const MIN_BET = 10;
@@ -18,7 +18,7 @@ const PlayerActions = ({
 }) => {
 
     const [betToPlace, setBetToPlace] = useState(MIN_BET);
-    
+
     useEffect(() => {
         if (turn == 2 && Deck.calculateHandScore(playerHand) >= 21) {
             setTurn(3);
@@ -38,17 +38,18 @@ const PlayerActions = ({
             setTurn(3);
         }
     }
-    
+
     const stay = () => {
         setTurn(3);
     }
 
     return (
-        <Grid container
-            justifyContent="center"
-            direction="row"
-            alignItems="center">
-            <Grid item>
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
+            <Box>
                 {
                     turn == 0 ?
                         <div>
@@ -67,8 +68,8 @@ const PlayerActions = ({
                         :
                         null
                 }
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
                 {
                     turn == 2 ?
                         <button onClick={hit}>
@@ -85,13 +86,13 @@ const PlayerActions = ({
                         :
                         null
                 }
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
                 <button onClick={() => deck.shuffle()}>
                     Shuffle
                 </button>
-            </Grid>
-        </Grid>
+            </Box>
+        </Box>
     )
 }
 
