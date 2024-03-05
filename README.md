@@ -23,11 +23,10 @@ Used [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates
 
 ## To-do
 
-- Dealer logic :white_check_mark:
-- Hand hit logic and constraints :white_check_mark:
 - BlackJack
 - Split and double
+- Website style
 - Card Style
-- Counting card informations
+- Counting card informations :white_check_mark:
 - Tips by the book
 - ...

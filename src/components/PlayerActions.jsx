@@ -51,7 +51,7 @@ const PlayerActions = ({
                 justifyContent: 'center'
             }}>
                 {turn == 0 ?
-                    <Stack spacing={2} direction="row" alignItems="center"  sx={{ width: 200 }}>
+                    <Stack spacing={2} direction="row" alignItems="center" sx={{ width: 200 }}>
                         <Slider
                             defaultValue={20}
                             step={10}

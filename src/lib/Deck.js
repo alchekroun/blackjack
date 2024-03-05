@@ -35,34 +35,45 @@ class Card {
 // TODO : BLACK CARD
 class Deck {
     constructor(nb = 1) {
-        this.drawer = [];
+        this.shoe = [];
         this.trash = [];
         for (let i = 0; i < nb; i++) {
             CARD_SUITS.forEach(suit => {
                 CARD_VALUES.forEach(value => {
-                    this.drawer.push(new Card(value[0], value[1], suit));
+                    this.shoe.push(new Card(value[0], value[1], suit));
                 });
             });
         }
-        // this.drawer.push(new Card('RESHUFFLE', -1, 'RESHUFFLE')); // Reshuffle card
+        // this.shoe.push(new Card('RESHUFFLE', -1, 'RESHUFFLE')); // Reshuffle card
         this.shuffle();
     }
 
     shuffle() {
-        this.drawer = this.drawer.concat(this.trash);
+        this.shoe = this.shoe.concat(this.trash);
         this.trash = [];
-        for (let i = this.drawer.length - 1; i > 0; i--) {
+        for (let i = this.shoe.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [this.drawer[i], this.drawer[j]] = [this.drawer[j], this.drawer[i]];
+            [this.shoe[i], this.shoe[j]] = [this.shoe[j], this.shoe[i]];
         }
     }
 
     draw() {
-        const idxCardToDraw = Math.floor(Math.random() * this.drawer.length);
-        const cardDrawn = this.drawer[idxCardToDraw];
+        const idxCardToDraw = Math.floor(Math.random() * this.shoe.length);
+        const cardDrawn = this.shoe[idxCardToDraw];
         this.trash.push(cardDrawn);
-        this.drawer.splice(idxCardToDraw, 1);
+        this.shoe.splice(idxCardToDraw, 1);
         return cardDrawn;
+    }
+
+    getCCCount() {
+        let count = 0;
+        this.trash.forEach(card => {
+            if (!card.down) {
+                if (card.value <= 6) count++;
+                if (card.value >= 10) count--;
+            }
+        });
+        return count;
     }
 
     static calculateHandScore(handCards) {
