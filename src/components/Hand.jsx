@@ -1,59 +1,38 @@
 import { useEffect, useState } from "react";
 
-const Hand = ({name, cards}) => {
+import { Box, Grid, Paper } from "@mui/material";
+import Deck from "../lib/Deck";
 
-    const [firstCard, setFirstCard] = useState(null);
-    const [secondCard, setSecondCard] = useState(null);
+const Hand = ({ name, gameCards }) => {
+    const [handCards, setHandCards] = useState([]);
     const [score, setScore] = useState(0);
 
     useEffect(() => {
-        setFirstCard(cards[0]);
-        setSecondCard(cards[1]);
-    }, [cards]);
-
-    useEffect(() => {
-        calculateScore();
-    }, [firstCard, secondCard])
-
-    const isBlackJack = () => {
-        return false;
-    }
-
-    const calculateScore = () => {
-        let output = 0;
-        let hasAs = false;
-        if (firstCard) {
-            hasAs = firstCard.face == 'AS';
-            output += firstCard.value;
-        }
-        if (secondCard) {
-            hasAs = hasAs || secondCard.face == 'AS';
-            output += secondCard.value;
-        }
-        if (output > 21 && hasAs) {
-            output -= 10;
-        }
-        setScore(output);
-    }
+        setHandCards(gameCards == null ? [] : gameCards);
+        setScore(Deck.calculateHandScore(gameCards));
+    }, [gameCards]);
 
 
     return (
-        <div className="card">
-          <h3>{name}</h3>
-          <p>Score : {score}</p>
-          <p>
-            {firstCard ?
-              firstCard.face + ' ' + firstCard.suit
-              :
-              null
+        <Grid container>
+            <h3>{name}</h3>
+            <p>Score : {score}</p>
+            {
+                handCards.map((card) => (
+                    <Paper
+                        key={card.face + ' ' + card.suit}
+                        elevation={1}
+                        sx={{
+                            height: 140,
+                            width: 100,
+                            backgroundColor: '#ccc',
+                        }}
+                    >
+                        {card.face + ' ' + card.suit}
+                    </Paper>
+                ))
             }
-            {secondCard ?
-              ' - ' + secondCard.face + ' ' + secondCard.suit
-              :
-              null
-            }
-          </p>
-        </div>
+        </Grid >
     )
 }
 

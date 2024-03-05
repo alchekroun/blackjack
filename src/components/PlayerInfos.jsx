@@ -1,7 +1,8 @@
-const PlayerInfos = ({playerCoins}) => {
+const PlayerInfos = ({ playerCoins, playerBet, deck }) => {
     return (
         <div className="card">
-            <p>You have : {playerCoins} $</p>
+            <p>Bet : {playerBet} - Stack : {playerCoins} $</p>
+            <p>Cards Left : {deck.drawer.length} - Cards Drawns : {deck.trash.length}</p>
         </div>
     )
 }

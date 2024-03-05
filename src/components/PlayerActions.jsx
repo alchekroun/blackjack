@@ -1,82 +1,97 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Slider from '@mui/material/Slider';
+import { Grid } from "@mui/material";
+import Deck from "../lib/Deck";
+
+const MIN_BET = 10;
 
 const PlayerActions = ({
     deck,
     turn,
-    playerBet,
     setPlayerBet,
     playerCoins,
     setPlayerCoins,
     setTurn,
     playerHand,
     setPlayerHand,
-    dealerHand,
-    setDealerHand
 }) => {
 
-    const [betToPlace, setBetToPlace] = useState(1);
+    const [betToPlace, setBetToPlace] = useState(MIN_BET);
+    
+    useEffect(() => {
+        if (turn == 2 && Deck.calculateHandScore(playerHand) >= 21) {
+            setTurn(3);
+        }
+    }, [playerHand]);
 
     const placeBet = () => {
         setPlayerBet(betToPlace);
         setPlayerCoins(playerCoins - betToPlace);
-        setTurn(turn + 1);
+        setTurn(1);
     }
 
-    const checkOutDraw = () => {
-        if (playerHand[0] && playerHand[1] && dealerHand[0] && dealerHand[1]) {
-            setDealerHand([null, null]);
-            setPlayerHand([null, null]);
-            setTurn(false);
-            return true
+    const hit = () => {
+        if (turn == 2 && Deck.canHit(playerHand)) {
+            setPlayerHand([...playerHand, deck.draw()]);
+        } else if (turn == 2 && !Deck.canHit(playerHand)) {
+            setTurn(3);
         }
-        return false;
     }
-
-    const drawCard = () => {
-        if (checkOutDraw()) return;
-        const cardDrawn = deck.draw();
-        if (turn) {
-            setPlayerHand(playerHand[0] == null ? [cardDrawn, null] : [playerHand[0], cardDrawn]);
-        } else {
-            setDealerHand(dealerHand[0] == null ? [cardDrawn, null] : [dealerHand[0], cardDrawn]);
-        }
-        setTurn(!turn);
+    
+    const stay = () => {
+        setTurn(3);
     }
 
     return (
-        <div className="card">
-            {
-                turn == 0 ?
-                    <div>
-                        <Slider
-                            defaultValue={20}
-                            step={10}
-                            valueLabelDisplay="auto"
-                            onChange={(e) => setBetToPlace(e.target.value)}
-                            max={playerCoins}
-                            min={10}
-                        />
-                        <button onClick={placeBet}>
-                            Bet
+        <Grid container
+            justifyContent="center"
+            direction="row"
+            alignItems="center">
+            <Grid item>
+                {
+                    turn == 0 ?
+                        <div>
+                            <Slider
+                                defaultValue={20}
+                                step={10}
+                                valueLabelDisplay="auto"
+                                onChange={(e) => setBetToPlace(e.target.value)}
+                                max={playerCoins}
+                                min={MIN_BET}
+                            />
+                            <button onClick={placeBet}>
+                                Bet
+                            </button>
+                        </div>
+                        :
+                        null
+                }
+            </Grid>
+            <Grid item>
+                {
+                    turn == 2 ?
+                        <button onClick={hit}>
+                            Hit
                         </button>
-                    </div>
-                    :
-                    null
-            }
-            {
-                turn == 1 ?
-                    <button onClick={drawCard}>
-                        Draw
-                    </button>
-                    :
-                    null
-            }
-            <button onClick={() => deck.shuffle()}>
-                Shuffle
-            </button>
-        </div>
+                        :
+                        null
+                }
+                {
+                    turn == 2 ?
+                        <button onClick={stay}>
+                            Stay
+                        </button>
+                        :
+                        null
+                }
+            </Grid>
+            <Grid item>
+                <button onClick={() => deck.shuffle()}>
+                    Shuffle
+                </button>
+            </Grid>
+        </Grid>
     )
 }
 

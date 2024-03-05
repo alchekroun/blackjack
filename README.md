@@ -11,7 +11,7 @@ Original BlackJack game created with React and JavaScript only.
 
 ### Game life
 
-1. Player bet
+1. Player places bet
 2. Player draws two cards
 3. Dealer draws two cards
 4. Player Hit or Pass
@@ -23,8 +23,8 @@ Used [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates
 
 ## To-do
 
-- Dealer logic
-- Hand hit logic and constraints
+- Dealer logic :white_check_mark:
+- Hand hit logic and constraints :white_check_mark:
 - BlackJack
 - Split and double
 - Card Style

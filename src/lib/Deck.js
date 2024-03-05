@@ -62,6 +62,23 @@ class Deck {
         this.drawer.splice(idxCardToDraw, 1);
         return cardDrawn;
     }
+
+    static calculateHandScore(handCards) {
+        let score = 0;
+        let hasAs = false;
+        handCards.forEach(card => {
+            score += card.value;
+            hasAs = hasAs || card.face == 'AS'
+        });
+        if (score > 21 && hasAs) {
+            score -= 10;
+        };
+        return score;
+    }
+
+    static canHit(handCards) {
+        return this.calculateHandScore(handCards) < 21;
+    }
 }
 
 export default Deck;
