@@ -92,6 +92,16 @@ class Deck {
     static canHit(handCards) {
         return this.calculateHandScore(handCards) < 21;
     }
+
+    static hasBlackJack(handCards) {
+        if (handCards[0] == 'AS') return handCards[1] == 'K' || handCards[1] == 'Q' || handCards[1] == 'J';
+        if (handCards[1] == 'AS') return handCards[0] == 'K' || handCards[0] == 'Q' || handCards[0] == 'J';
+        return false;
+    }
+
+    static canSplit(handCards) {
+        return handCards[0].face == handCards[1].face
+    }
 }
 
 export default Deck;

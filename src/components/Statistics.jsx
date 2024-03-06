@@ -9,9 +9,6 @@ const Statistics = ({ deck, dealerHand, playerHand }) => {
     useEffect(() => {
         const count = deck.getCCCount();
         const trueCount = Math.floor(count / (deck.shoe.length % 54));
-        console.log(count);
-        console.log((deck.shoe % 54));
-        console.log(trueCount);
         setRunningCount(count);
         setTrueCount(trueCount)
     }, [deck, playerHand, dealerHand]);

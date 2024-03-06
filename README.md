@@ -23,10 +23,12 @@ Used [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates
 
 ## To-do
 
-- BlackJack
-- Split and double
+- BlackJack :white_check_mark:
+- Split
+- Double :white_check_mark:
 - Website style
 - Card Style
 - Counting card informations :white_check_mark:
 - Tips by the book
-- ...
+- Probabilities of getting a face card
+- ..

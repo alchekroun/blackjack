@@ -7,7 +7,7 @@ import Hand from './components/Hand'
 import Deck from './lib/Deck';
 import PlayerActions from './components/PlayerActions'
 import PlayerInfos from './components/PlayerInfos'
-import InformationModal from './components/InformationModal'
+import InformationSnack from './components/InformationSnack'
 import { Grid } from '@mui/material'
 import Statistics from './components/Statistics'
 
@@ -18,19 +18,22 @@ function App() {
   const [playerBet, setPlayerBet] = useState(0);
   const [playerCoins, setPlayerCoins] = useState(100);
   const [turn, setTurn] = useState(0);
-  const [informationMessage, setInformationMessage] = useState("");
-  const [showInformationModal, setShowInformationModal] = useState(false);
+  const [outcomeMessage, setOutcomeMessage] = useState("");
+  const [showOutcomeSnack, setShowOutcomeSnack] = useState(false);
+  const [outcomeMessageType, setOutcomeMessageType] = useState(0);
   const [isLost, setIsLost] = useState(false);
+  const [hasBlackJack, setHasBlackJack] = useState(false);
 
   useEffect(() => {
     nextStep();
   }, [turn]);
 
-  const handleInformationModal = (message) => {
-    setInformationMessage(message);
-    setShowInformationModal(true);
+  const handleOutcomeSnack = (message, type) => {
+    setOutcomeMessage(message);
+    setShowOutcomeSnack(true);
+    setOutcomeMessageType(type);
     setTimeout(() => {
-      setShowInformationModal(false);
+      setShowOutcomeSnack(false);
     }, 2000);
   }
 
@@ -62,7 +65,10 @@ function App() {
       const secondDealerCard = deck.draw();
       secondDealerCard.down = true;
       setDealerHand([firstDealerCard, secondDealerCard]);
-      setTurn(turn + 1);
+      setTurn(2);
+    } else if (turn == 2 && Deck.hasBlackJack(playerHand)) {
+      setHasBlackJack(true);
+      setTurn(3);
     } else if (turn == 3) {
       let tmpDealerHand = [...dealerHand];
       tmpDealerHand.at(1).down = false;
@@ -70,15 +76,16 @@ function App() {
         tmpDealerHand.push(deck.draw());
       }
       setDealerHand(tmpDealerHand);
-      setTurn(turn + 1);
+      setTurn(4);
     } else if (turn == 4) {
       await new Promise(r => setTimeout(r, 1000));
       const winner = getWinners();
       if (winner == 1) {
-        handleInformationModal('Win');
-        setPlayerCoins(playerCoins + playerBet * 2);
+        const moneyWon = playerBet * (hasBlackJack ? 2.5 : 2);
+        handleOutcomeSnack((hasBlackJack ? 'BlackJack!' : 'Won') + '\t+' + moneyWon + '$', 1);
+        setPlayerCoins(playerCoins + moneyWon);
       } else if (winner == -1) {
-        handleInformationModal('Lose');
+        handleOutcomeSnack('Loss \t-' + playerBet + '$', -1);
         if (playerLost()) {
           setTurn(-1);
           setIsLost(true);
@@ -87,7 +94,7 @@ function App() {
           return;
         }
       } else {
-        handleInformationModal('Draw');
+        handleOutcomeSnack('Draw', 0);
         setPlayerCoins(playerCoins + playerBet);
       }
       setTurn(0);
@@ -106,10 +113,7 @@ function App() {
             isLost ? <p>No more money</p> : null
           }
         </Grid>
-        <Grid
-          item
-          xs={12}
-        >
+        <Grid item xs={12}>
           <Hand name={"Dealer"} gameCards={dealerHand} />
         </Grid>
         <Grid item xs={12}>
@@ -125,7 +129,7 @@ function App() {
           <PlayerInfos playerCoins={playerCoins} playerBet={playerBet} deck={deck} />
         </Grid>
       </Grid>
-      <InformationModal informationMessage={informationMessage} showInformationModal={showInformationModal} />
+      <InformationSnack informationMessage={outcomeMessage} showInformationSnack={showOutcomeSnack} setShowInformationSnack={setShowOutcomeSnack} informationMessageType={outcomeMessageType} />
     </div>
   )
 }

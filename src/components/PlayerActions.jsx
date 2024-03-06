@@ -9,6 +9,7 @@ const MIN_BET = 10;
 const PlayerActions = ({
     deck,
     turn,
+    playerBet,
     setPlayerBet,
     playerCoins,
     setPlayerCoins,
@@ -43,8 +44,29 @@ const PlayerActions = ({
         setTurn(3);
     }
 
+    const double = () => {
+        if (turn == 2 && canDouble()) {
+            setPlayerBet(playerBet * 2);
+            setPlayerCoins(playerCoins - playerBet);
+            setPlayerHand([...playerHand, deck.draw()]);
+            setTurn(3);
+        }
+    }
+
+    const canDouble = () => {
+        return Deck.canHit(playerHand) && (playerBet <= playerCoins);
+    }
+
+    const split = () => {
+
+    }
+
+    const canSplit = () => {
+        return Deck.canHit(playerHand) && Deck.canSplit(playerHand);
+    }
+
     return (
-        <Stack >
+        <Stack>
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -69,21 +91,23 @@ const PlayerActions = ({
                 }
                 {
                     turn == 2 ?
-                        <button onClick={hit}>
-                            Hit
-                        </button>
+                        <Stack spacing={2} direction="row" alignItems="center" justifyContent="center" sx={{ width: 200 }}>
+                            <button onClick={hit} disabled={!Deck.canHit(playerHand)}>
+                                Hit
+                            </button>
+                            <button onClick={stay}>
+                                Stay
+                            </button>
+                            <button onClick={double} disabled={!canDouble()}>
+                                Double
+                            </button>
+                            <button onClick={split} disabled={!canSplit()}>
+                                Split
+                            </button>
+                        </Stack>
                         :
                         null
                 }
-                {
-                    turn == 2 ?
-                        <button onClick={stay}>
-                            Stay
-                        </button>
-                        :
-                        null
-                }
-
             </Box>
             <Box>
                 <button onClick={() => deck.shuffle()}>
@@ -91,7 +115,6 @@ const PlayerActions = ({
                 </button>
             </Box>
         </Stack>
-        /*<Box>*/
     )
 }
 
