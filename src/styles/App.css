@@ -1,3 +1,9 @@
+.root {
+  flex-grow: 1;
+  min-height: '100vh';
+  display: 'flex';
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

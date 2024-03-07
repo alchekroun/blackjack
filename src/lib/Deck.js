@@ -76,6 +76,22 @@ class Deck {
         return count;
     }
 
+    getTensInShoe() {
+        let count = 0;
+        this.shoe.forEach(card => {
+            if (card.value >= 10) count++;
+        });
+        // Dealer face down card
+        this.trash.forEach(card => {
+            if (card.down && card.value >= 10) count++;
+        })
+        return count;
+    }
+
+    getTenProba(dealer = false) {
+        return this.getTensInShoe() / (this.shoe.length + (dealer ? -1 : 0));
+    }
+
     static calculateHandScore(handCards) {
         let score = 0;
         let hasAs = false;

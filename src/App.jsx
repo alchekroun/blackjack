@@ -105,7 +105,7 @@ function App() {
 
 
   return (
-    <div style={{ flexGrow: 1 }}>
+    <div>
       <Grid container>
         <Grid item xs={12}>
           <h1>BackJack</h1>
