@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './styles/App.css'
 import Hand from './components/Hand'
 
@@ -8,7 +6,7 @@ import Deck from './lib/Deck';
 import PlayerActions from './components/PlayerActions'
 import PlayerInfos from './components/PlayerInfos'
 import InformationSnack from './components/InformationSnack'
-import { Grid, Paper } from '@mui/material'
+import { Grid } from '@mui/material'
 import Statistics from './components/Statistics'
 
 function App() {

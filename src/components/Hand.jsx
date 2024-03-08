@@ -29,7 +29,7 @@ const Hand = ({ name, gameCards }) => {
                             key={card.face + ' ' + card.suit}
                             elevation={1}
                             sx={{
-                                backgroundImage: card.down ? `url("/src/assets/svg-cards/back.svg")` : `url(${card.image})`,
+                                backgroundImage: card.down ? `url("/svg-cards/back.svg")` : `url(${card.image})`,
                             }}
                             className="handCard"
                         />

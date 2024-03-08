@@ -30,7 +30,7 @@ class Card {
         this.value = value;
         this.suit = suit;
         this.down = false;
-        this.image = '/src/assets/svg-cards/' + face + '_of_' + suit + (face == 'king' || face == 'queen' || face == 'jack' ? '2' : '') + '.svg'
+        this.image = '/svg-cards/' + face + '_of_' + suit + (face == 'king' || face == 'queen' || face == 'jack' ? '2' : '') + '.svg'
     }
 }
 // TODO : BLACK CARD
