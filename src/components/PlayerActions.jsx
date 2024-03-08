@@ -28,9 +28,9 @@ const PlayerActions = ({
     const [betToPlace, setBetToPlace] = useState(MIN_BET);
 
     useEffect(() => {
-        if (turn == 2 && Deck.calculateHandScore(playerHand) >= 21) {
+        if (turn === 2 && Deck.calculateHandScore(playerHand) >= 21) {
             setTurn(3);
-        } else if (turn == 21 && playerSplitHands.length > 0 && Deck.calculateHandScore(playerSplitHands[activeHand]) >= 21) {
+        } else if (turn === 21 && playerSplitHands.length > 0 && Deck.calculateHandScore(playerSplitHands[activeHand]) >= 21) {
             nextTurnOrNextActiveHand();
         }
     }, [playerHand, playerSplitHands]);
@@ -55,27 +55,27 @@ const PlayerActions = ({
     }
 
     const hit = () => {
-        if (turn == 2 && Deck.canHit(playerHand)) {
+        if (turn === 2 && Deck.canHit(playerHand)) {
             setPlayerHand([...playerHand, deck.draw()]);
-        } else if (turn == 21 && playerSplitHands.length > 0 && Deck.canHit(playerSplitHands[activeHand])) {
+        } else if (turn === 21 && playerSplitHands.length > 0 && Deck.canHit(playerSplitHands[activeHand])) {
             const tmpPlayerSplitHands = [...playerSplitHands];
             tmpPlayerSplitHands[activeHand].push(deck.draw());
             setPlayerSplitHands(tmpPlayerSplitHands);
-        } else if (turn == 2 && !Deck.canHit(playerHand)) {
+        } else if (turn === 2 && !Deck.canHit(playerHand)) {
             setTurn(3);
         }
     }
 
     const stay = () => {
-        if (turn == 2) {
+        if (turn === 2) {
             setTurn(3);
-        } else if (turn == 21) {
+        } else if (turn === 21) {
             nextTurnOrNextActiveHand();
         }
     }
 
     const double = () => {
-        if (turn == 2 && canDouble()) {
+        if (turn === 2 && canDouble()) {
             setPlayerBet(playerBet * 2);
             setPlayerMoney(playerMoney - playerBet);
             setPlayerHand([...playerHand, deck.draw()]);
@@ -85,11 +85,11 @@ const PlayerActions = ({
 
     const canDouble = () => {
         const handToCheck = getActiveHand();
-        return Deck.canHit(handToCheck) && (handToCheck.length == 2) && (playerBet <= playerMoney);
+        return Deck.canHit(handToCheck) && (handToCheck.length === 2) && (playerBet <= playerMoney);
     }
 
     const split = () => {
-        if (turn == 2 && canSplit()) {
+        if (turn === 2 && canSplit()) {
             const splitHands = [[playerHand[0], deck.draw()], [playerHand[1], deck.draw()]];
             setPlayerSplitHands(splitHands);
             setPlayerBet(playerBet * 2);
@@ -116,7 +116,7 @@ const PlayerActions = ({
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                {turn == 0 ?
+                {turn === 0 ?
                     <Stack spacing={2} direction="row" alignItems="center" sx={{ width: 200 }}>
                         <Slider
                             defaultValue={20}
@@ -135,7 +135,7 @@ const PlayerActions = ({
                     null
                 }
                 {
-                    turn == 2 || turn == 21 ?
+                    turn === 2 || turn === 21 ?
                         <Stack spacing={2} direction="row" alignItems="center" justifyContent="center" sx={{ width: 200 }}>
                             <button onClick={hit} disabled={!Deck.canHit(getActiveHand())}>
                                 Hit
@@ -154,7 +154,7 @@ const PlayerActions = ({
                         null
                 }
                 {
-                    turn == -1 ?
+                    turn === -1 ?
                         <button onClick={rebuy}>
                             Rebuy
                         </button>

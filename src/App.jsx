@@ -77,10 +77,6 @@ function App() {
     if (playerScore == dealerScore) return 0;
   }
 
-  const playerLost = () => {
-    return playerMoney < 10;
-  }
-
   const handleRoundOutcome = () => {
     let moneyAmountUpdated = playerMoney;
     if (playerSplitHands.length > 0) {
@@ -116,21 +112,21 @@ function App() {
         handleOutcomeSnack((hasBlackJack ? 'BlackJack!' : 'Won') + '\t+' + moneyWon + '$', 1);
       } else if (winner == -1) {
         handleOutcomeSnack('Loss \t-' + playerBet + '$', -1);
-        if (playerMoney < 10) {
-          handleLostGame();
-          return;
-        }
       } else {
         handleOutcomeSnack('Draw', 0);
         moneyAmountUpdated += playerBet;
       }
     }
+    if (moneyAmountUpdated < 10) {
+      handleLostGame();
+      return;
+    }
     setPlayerMoney(moneyAmountUpdated);
     cookies.set('playerMoney', moneyAmountUpdated, { path: '/' });
+    setTurn(0);
   }
 
   const handleEndRound = () => {
-    setTurn(0);
     setIsInsured(false);
     setHasBlackJack(false);
     setPlayerHand([]);
