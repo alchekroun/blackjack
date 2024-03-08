@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Box, Grid, Paper } from "@mui/material";
 import Deck from "../lib/Deck";
 
+import '../styles/details.css'
+
 const Hand = ({ name, gameCards }) => {
     const [handCards, setHandCards] = useState([]);
     const [score, setScore] = useState(0);
@@ -27,13 +29,10 @@ const Hand = ({ name, gameCards }) => {
                             key={card.face + ' ' + card.suit}
                             elevation={1}
                             sx={{
-                                height: 140,
-                                width: 100,
-                                backgroundColor: '#ccc',
+                                backgroundImage: card.down ? `url("../src/assets/svg-cards/back.svg")` : `url(${card.image})`,
                             }}
-                        >
-                            {card.down ? null : card.face + ' ' + card.suit}
-                        </Paper>
+                            className="handCard"
+                        />
                     ))
                 }
             </Box>

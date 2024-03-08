@@ -28,6 +28,7 @@ const Statistics = ({ deck, dealerHand, playerHand }) => {
             <p color={trueCount > 15 ? 'orange' : 'green'}>True count : {trueCount}</p>
             <p>P_player(10) : {(getTenPlayerProba * 100).toFixed(2)} %</p>
             <p>P_dealer(10) : {(getTenDealerProba * 100).toFixed(2)} %</p>
+            <p>Cards Left : {deck.shoe.length} - Cards Drawns : {deck.trash.length}</p>
         </Box>
     )
 }

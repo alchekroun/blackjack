@@ -8,7 +8,7 @@ import Deck from './lib/Deck';
 import PlayerActions from './components/PlayerActions'
 import PlayerInfos from './components/PlayerInfos'
 import InformationSnack from './components/InformationSnack'
-import { Grid } from '@mui/material'
+import { Grid, Paper } from '@mui/material'
 import Statistics from './components/Statistics'
 
 function App() {
@@ -113,20 +113,20 @@ function App() {
             isLost ? <p>No more money</p> : null
           }
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} >
           <Hand name={"Dealer"} gameCards={dealerHand} />
         </Grid>
         <Grid item xs={12}>
           <Hand name={"Player"} gameCards={playerHand} />
         </Grid>
-        <Grid item xs={2}>
-          <Statistics deck={deck} dealerHand={dealerHand} playerHand={playerHand} />
+        <Grid item xs={12} md={2}>
+          <PlayerInfos playerCoins={playerCoins} playerBet={playerBet} />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerCoins={playerCoins} setPlayerCoins={setPlayerCoins} playerHand={playerHand} setPlayerHand={setPlayerHand} />
         </Grid>
-        <Grid item xs={2}>
-          <PlayerInfos playerCoins={playerCoins} playerBet={playerBet} deck={deck} />
+        <Grid item xs={12} md={2}>
+          <Statistics deck={deck} dealerHand={dealerHand} playerHand={playerHand} />
         </Grid>
       </Grid>
       <InformationSnack informationMessage={outcomeMessage} showInformationSnack={showOutcomeSnack} setShowInformationSnack={setShowOutcomeSnack} informationMessageType={outcomeMessageType} />

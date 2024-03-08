@@ -1,12 +1,12 @@
 class CardSuit {
-    static CLUBS = 'Clubs';
-    static DIAMONDS = 'Diamonds';
-    static HEARTS = 'Hearts';
-    static SPADES = 'Spades';
+    static CLUBS = 'clubs';
+    static DIAMONDS = 'diamonds';
+    static HEARTS = 'hearts';
+    static SPADES = 'spades';
 }
 
 class CardValue {
-    static AS = 'AS';
+    static ACE = 'ace';
     static TWO = '2';
     static THREE = '3';
     static FOUR = '4';
@@ -16,13 +16,13 @@ class CardValue {
     static EIGHT = '8';
     static NINE = '9';
     static TEN = '10';
-    static JACK = 'J';
-    static QUEEN = 'Q';
-    static KING = 'K';
+    static JACK = 'jack';
+    static QUEEN = 'queen';
+    static KING = 'king';
 }
 
 const CARD_SUITS = [CardSuit.CLUBS, CardSuit.DIAMONDS, CardSuit.HEARTS, CardSuit.SPADES];
-const CARD_VALUES = [[CardValue.AS, 11], [CardValue.TWO, 2], [CardValue.THREE, 3], [CardValue.FOUR, 4], [CardValue.FIVE, 5], [CardValue.SIX, 6], [CardValue.SEVEN, 7], [CardValue.EIGHT, 8], [CardValue.NINE, 9], [CardValue.TEN, 10], [CardValue.JACK, 10], [CardValue.QUEEN, 10], [CardValue.KING, 10]]
+const CARD_VALUES = [[CardValue.ACE, 11], [CardValue.TWO, 2], [CardValue.THREE, 3], [CardValue.FOUR, 4], [CardValue.FIVE, 5], [CardValue.SIX, 6], [CardValue.SEVEN, 7], [CardValue.EIGHT, 8], [CardValue.NINE, 9], [CardValue.TEN, 10], [CardValue.JACK, 10], [CardValue.QUEEN, 10], [CardValue.KING, 10]]
 
 class Card {
     constructor(face, value, suit) {
@@ -30,6 +30,7 @@ class Card {
         this.value = value;
         this.suit = suit;
         this.down = false;
+        this.image = '../src/assets/svg-cards/' + face + '_of_' + suit + (face == 'king' || face == 'queen' || face == 'jack' ? '2' : '') + '.svg'
     }
 }
 // TODO : BLACK CARD
@@ -97,7 +98,7 @@ class Deck {
         let hasAs = false;
         handCards.forEach(card => {
             score += card.down ? 0 : card.value;
-            hasAs = hasAs || card.face == 'AS'
+            hasAs = hasAs || card.face == 'ACE'
         });
         if (score > 21 && hasAs) {
             score -= 10;
@@ -110,8 +111,8 @@ class Deck {
     }
 
     static hasBlackJack(handCards) {
-        if (handCards[0] == 'AS') return handCards[1] == 'K' || handCards[1] == 'Q' || handCards[1] == 'J';
-        if (handCards[1] == 'AS') return handCards[0] == 'K' || handCards[0] == 'Q' || handCards[0] == 'J';
+        if (handCards[0] == 'ACE') return handCards[1] == 'king' || handCards[1] == 'queen' || handCards[1] == 'jack';
+        if (handCards[1] == 'ACE') return handCards[0] == 'king' || handCards[0] == 'queen' || handCards[0] == 'jack';
         return false;
     }
 

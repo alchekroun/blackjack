@@ -4,6 +4,8 @@ import Slider from '@mui/material/Slider';
 import { Box, Stack } from "@mui/material";
 import Deck from "../lib/Deck";
 
+import '../styles/details.css'
+
 const MIN_BET = 10;
 
 const PlayerActions = ({
@@ -66,7 +68,7 @@ const PlayerActions = ({
     }
 
     return (
-        <Stack>
+        <Stack className="playerActions">
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -81,6 +83,7 @@ const PlayerActions = ({
                             onChange={(e) => setBetToPlace(e.target.value)}
                             max={playerCoins}
                             min={MIN_BET}
+                            color="warning"
                         />
                         <button onClick={placeBet}>
                             Bet
