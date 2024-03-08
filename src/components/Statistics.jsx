@@ -17,7 +17,7 @@ const Statistics = ({ deck, dealerHand, playerHand }) => {
 
     const countingCards = () => {
         const count = deck.getCCCount();
-        const trueCount = Math.floor(count / (deck.shoe.length % 54));
+        const trueCount = Math.floor(count / ((deck.shoe.length % 54) + 1));
         setRunningCount(count);
         setTrueCount(trueCount)
     }

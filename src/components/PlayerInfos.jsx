@@ -1,9 +1,18 @@
-const PlayerInfos = ({ playerMoney, playerBet, isInsured }) => {
+import { Box } from "@mui/material";
+
+const PlayerInfos = ({ playerMoney, playerBet, isInsured, isLost }) => {
     return (
-        <div className="card">
-            <p>Bet : {playerBet} - Stack : {playerMoney} $</p>
-            {isInsured ? <p>Insured</p> : null}
-        </div>
+        <Box>
+            {
+                isLost ?
+                    <p>No more money</p>
+                    :
+                    <div>
+                        < p > Bet : {playerBet} - Stack : {playerMoney} $</p>
+                        {isInsured ? <p>Insured</p> : null}
+                    </div>
+            }
+        </Box >
     )
 }
 

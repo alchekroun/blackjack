@@ -18,6 +18,7 @@ const PlayerActions = ({
     setTurn,
     playerHand,
     setPlayerHand,
+    setIsLost
 }) => {
 
     const [betToPlace, setBetToPlace] = useState(MIN_BET);
@@ -67,6 +68,12 @@ const PlayerActions = ({
         return Deck.canHit(playerHand) && Deck.canSplit(playerHand);
     }
 
+    const rebuy = () => {
+        setPlayerMoney(100);
+        setTurn(0);
+        setIsLost(false);
+    }
+
     return (
         <Stack className="playerActions">
             <Box sx={{
@@ -108,6 +115,14 @@ const PlayerActions = ({
                                 Split
                             </button>
                         </Stack>
+                        :
+                        null
+                }
+                {
+                    turn == -1 ?
+                        <button onClick={rebuy}>
+                            Rebuy
+                        </button>
                         :
                         null
                 }

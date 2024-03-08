@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Cookie from 'universal-cookie'
 import './styles/App.css'
 import Hand from './components/Hand'
 
@@ -9,8 +10,10 @@ import InformationSnack from './components/InformationSnack'
 import { Grid } from '@mui/material'
 import Statistics from './components/Statistics'
 import ConfirmationDialog from './components/ConfirmationDialog';
+import Header from './components/Header';
 
 function App() {
+  const cookies = new Cookie();
   const [deck, setDeck] = useState(new Deck(4));
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -24,6 +27,17 @@ function App() {
   const [hasBlackJack, setHasBlackJack] = useState(false);
   const [showInsuranceConfirmation, setShowInsuranceConfirmation] = useState(false);
   const [isInsured, setIsInsured] = useState(false);
+
+  useEffect(() => {
+    const savedMoney = cookies.get('playerMoney');
+    if (savedMoney != undefined) {
+      setPlayerMoney(parseInt(savedMoney));
+      if (savedMoney <= 0) {
+        setTurn(-1);
+        setIsLost(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     nextStep();
@@ -111,10 +125,12 @@ function App() {
     } else if (turn == 4) {
       await new Promise(r => setTimeout(r, 1000));
       const winner = getWinners();
+      let moneyAmountUpdated = playerMoney;
       if (winner == 1) {
         const moneyWon = playerBet * (hasBlackJack ? 2.5 : 2);
+        moneyAmountUpdated += moneyWon;
         handleOutcomeSnack((hasBlackJack ? 'BlackJack!' : 'Won') + '\t+' + moneyWon + '$', 1);
-        setPlayerMoney(playerMoney + moneyWon);
+        setPlayerMoney(moneyAmountUpdated);
       } else if (winner == -1) {
         handleOutcomeSnack('Loss \t-' + playerBet + '$', -1);
         if (playerLost()) {
@@ -122,30 +138,28 @@ function App() {
           setIsLost(true);
           setPlayerHand([]);
           setDealerHand([]);
+          cookies.set('playerMoney', moneyAmountUpdated, { path: '/' });
           return;
         }
       } else {
         handleOutcomeSnack('Draw', 0);
-        setPlayerMoney(playerMoney + playerBet);
+        moneyAmountUpdated += playerBet;
+        setPlayerMoney(moneyAmountUpdated);
       }
       setTurn(0);
       setIsInsured(false);
       setHasBlackJack(false);
       setPlayerHand([]);
       setDealerHand([]);
+      cookies.set('playerMoney', moneyAmountUpdated, { path: '/' });
     }
   }
 
 
   return (
     <div>
+      <Header />
       <Grid container>
-        <Grid item xs={12}>
-          <h1>BackJack</h1>
-          {
-            isLost ? <p>No more money</p> : null
-          }
-        </Grid>
         <Grid item xs={12} >
           <Hand name={"Dealer"} gameCards={dealerHand} />
         </Grid>
@@ -153,10 +167,10 @@ function App() {
           <Hand name={"Player"} gameCards={playerHand} />
         </Grid>
         <Grid item xs={12} md={2}>
-          <PlayerInfos playerMoney={playerMoney} playerBet={playerBet} isInsured={isInsured} />
+          <PlayerInfos playerMoney={playerMoney} playerBet={playerBet} isInsured={isInsured} isLost={isLost} />
         </Grid>
         <Grid item xs={12} md={8}>
-          <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerMoney={playerMoney} setPlayerMoney={setPlayerMoney} playerHand={playerHand} setPlayerHand={setPlayerHand} />
+          <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerMoney={playerMoney} setPlayerMoney={setPlayerMoney} playerHand={playerHand} setPlayerHand={setPlayerHand} setIsLost={setIsLost} />
         </Grid>
         <Grid item xs={12} md={2}>
           <Statistics deck={deck} dealerHand={dealerHand} playerHand={playerHand} />

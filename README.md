@@ -7,7 +7,7 @@ Original BlackJack game created with React and JavaScript only.
 ### Rules
 
 - BlackJack pays 3 to 2
-- Dealer stops at 16
+- Dealer stops at 17
 
 ### Game life
 
