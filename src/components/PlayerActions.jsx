@@ -16,8 +16,12 @@ const PlayerActions = ({
     playerMoney,
     setPlayerMoney,
     setTurn,
+    activeHand,
+    setActiveHand,
     playerHand,
     setPlayerHand,
+    playerSplitHands,
+    setPlayerSplitHands,
     setIsLost
 }) => {
 
@@ -26,8 +30,10 @@ const PlayerActions = ({
     useEffect(() => {
         if (turn == 2 && Deck.calculateHandScore(playerHand) >= 21) {
             setTurn(3);
+        } else if (turn == 21 && playerSplitHands.length > 0 && Deck.calculateHandScore(playerSplitHands[activeHand]) >= 21) {
+            nextTurnOrNextActiveHand();
         }
-    }, [playerHand]);
+    }, [playerHand, playerSplitHands]);
 
     const placeBet = () => {
         setPlayerBet(betToPlace);
@@ -35,16 +41,37 @@ const PlayerActions = ({
         setTurn(1);
     }
 
+    const nextTurnOrNextActiveHand = () => {
+        if (activeHand >= playerSplitHands.length - 1) {
+            setTurn(3);
+            setActiveHand(0);
+        } else {
+            setActiveHand(activeHand + 1);
+        }
+    }
+
+    const getActiveHand = () => {
+        return playerSplitHands.length > 0 ? playerSplitHands[activeHand] : playerHand;
+    }
+
     const hit = () => {
         if (turn == 2 && Deck.canHit(playerHand)) {
             setPlayerHand([...playerHand, deck.draw()]);
+        } else if (turn == 21 && playerSplitHands.length > 0 && Deck.canHit(playerSplitHands[activeHand])) {
+            const tmpPlayerSplitHands = [...playerSplitHands];
+            tmpPlayerSplitHands[activeHand].push(deck.draw());
+            setPlayerSplitHands(tmpPlayerSplitHands);
         } else if (turn == 2 && !Deck.canHit(playerHand)) {
             setTurn(3);
         }
     }
 
     const stay = () => {
-        setTurn(3);
+        if (turn == 2) {
+            setTurn(3);
+        } else if (turn == 21) {
+            nextTurnOrNextActiveHand();
+        }
     }
 
     const double = () => {
@@ -57,15 +84,23 @@ const PlayerActions = ({
     }
 
     const canDouble = () => {
-        return Deck.canHit(playerHand) && (playerBet <= playerMoney) && (playerHand.length == 2);
+        const handToCheck = getActiveHand();
+        return Deck.canHit(handToCheck) && (handToCheck.length == 2) && (playerBet <= playerMoney);
     }
 
     const split = () => {
-
+        if (turn == 2 && canSplit()) {
+            const splitHands = [[playerHand[0], deck.draw()], [playerHand[1], deck.draw()]];
+            setPlayerSplitHands(splitHands);
+            setPlayerBet(playerBet * 2);
+            setPlayerMoney(playerMoney - playerBet);
+            setTurn(21);
+        }
     }
 
     const canSplit = () => {
-        return Deck.canHit(playerHand) && Deck.canSplit(playerHand);
+        const handToCheck = getActiveHand();
+        return Deck.canHit(handToCheck) && Deck.canSplit(handToCheck) && (playerBet <= playerMoney);
     }
 
     const rebuy = () => {
@@ -100,9 +135,9 @@ const PlayerActions = ({
                     null
                 }
                 {
-                    turn == 2 ?
+                    turn == 2 || turn == 21 ?
                         <Stack spacing={2} direction="row" alignItems="center" justifyContent="center" sx={{ width: 200 }}>
-                            <button onClick={hit} disabled={!Deck.canHit(playerHand)}>
+                            <button onClick={hit} disabled={!Deck.canHit(getActiveHand())}>
                                 Hit
                             </button>
                             <button onClick={stay}>

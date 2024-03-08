@@ -8,6 +8,7 @@ Original BlackJack game created with React and JavaScript only.
 
 - BlackJack pays 3 to 2
 - Dealer stops at 17
+- Can only split once
 
 ### Game life
 
@@ -23,8 +24,7 @@ Used [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates
 
 ## To-do
 
-- Split
-- Insurence when ACE dealer face up card pops :white_check_mark:
+- Split :white_check_mark:
 - Tips by the book
 - History and stats
 - Counting card practice

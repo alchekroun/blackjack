@@ -7,7 +7,7 @@ import { Deck, Card } from './lib/Deck';
 import PlayerActions from './components/PlayerActions'
 import PlayerInfos from './components/PlayerInfos'
 import InformationSnack from './components/InformationSnack'
-import { Grid } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import Statistics from './components/Statistics'
 import ConfirmationDialog from './components/ConfirmationDialog';
 import Header from './components/Header';
@@ -15,7 +15,9 @@ import Header from './components/Header';
 function App() {
   const cookies = new Cookie();
   const [deck, setDeck] = useState(new Deck(4));
+  const [activeHand, setActiveHand] = useState(0);
   const [playerHand, setPlayerHand] = useState([]);
+  const [playerSplitHands, setPlayerSplitHands] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
   const [playerBet, setPlayerBet] = useState(0);
   const [playerMoney, setPlayerMoney] = useState(100);
@@ -66,8 +68,8 @@ function App() {
     }
   }
 
-  const getWinners = () => {
-    const playerScore = Deck.calculateHandScore(playerHand);
+  const getWinners = (handToCheck) => {
+    const playerScore = Deck.calculateHandScore(handToCheck);
     const dealerScore = Deck.calculateHandScore(dealerHand);
     if (playerScore > 21) return -1;
     if (dealerScore > 21 || playerScore > dealerScore) return 1;
@@ -79,11 +81,80 @@ function App() {
     return playerMoney < 10;
   }
 
+  const handleRoundOutcome = () => {
+    let moneyAmountUpdated = playerMoney;
+    if (playerSplitHands.length > 0) {
+      let messageOutcome = "";
+      let moneyWon = 0;
+      playerSplitHands.forEach((playerSplitHand, nb) => {
+        const outcome = getWinners(playerSplitHand);
+        if (outcome == 1) {
+          messageOutcome += "Won hand " + nb + "\n";
+          moneyWon += playerBet * (0.5 * 2); // bet on one hand times two
+        } else if (outcome == 0) {
+          messageOutcome += "Draw hand " + nb + "\t";
+          moneyWon += playerBet * 0.5  // bet on one hand
+        } else {
+          messageOutcome += "Lost hand " + nb + "\t";
+          moneyWon -= playerBet * (0.5 * 2);  // bet on one hand times two
+        }
+      });
+      if (moneyWon > playerBet) {
+        handleOutcomeSnack(messageOutcome + '+' + moneyWon + '$', 1);
+        moneyAmountUpdated += moneyWon;
+      } else if (moneyWon == playerBet) {
+        handleOutcomeSnack(messageOutcome + 'Draw', 0);
+        moneyAmountUpdated += moneyWon;
+      } else {
+        handleOutcomeSnack(messageOutcome + '-' + playerBet + '$', -1);
+      }
+    } else {
+      const winner = getWinners(playerHand);
+      if (winner == 1) {
+        let moneyWon = playerBet * (hasBlackJack ? 2.5 : 2);
+        moneyAmountUpdated += moneyWon;
+        handleOutcomeSnack((hasBlackJack ? 'BlackJack!' : 'Won') + '\t+' + moneyWon + '$', 1);
+      } else if (winner == -1) {
+        handleOutcomeSnack('Loss \t-' + playerBet + '$', -1);
+        if (playerMoney < 10) {
+          handleLostGame();
+          return;
+        }
+      } else {
+        handleOutcomeSnack('Draw', 0);
+        moneyAmountUpdated += playerBet;
+      }
+    }
+    setPlayerMoney(moneyAmountUpdated);
+    cookies.set('playerMoney', moneyAmountUpdated, { path: '/' });
+  }
+
+  const handleEndRound = () => {
+    setTurn(0);
+    setIsInsured(false);
+    setHasBlackJack(false);
+    setPlayerHand([]);
+    setDealerHand([]);
+    setPlayerSplitHands([]);
+  }
+
+  const handleLostGame = () => {
+    setTurn(-1);
+    setIsLost(true);
+    setIsInsured(false);
+    setHasBlackJack(false);
+    setPlayerHand([]);
+    setDealerHand([]);
+    setPlayerSplitHands([]);
+    cookies.set('playerMoney', 0, { path: '/' });
+  }
+
   const nextStep = async () => {
     /*
       turn = 0 : Bet
       turn = 1 : Dealer draws
       turn = 2 : Player plays
+      turn = 25: Player splits
       turn = 3 : Dealer plays
       turn = 4 : Scores
     */
@@ -101,6 +172,8 @@ function App() {
     } else if (turn == 2 && Deck.hasBlackJack(playerHand)) {
       setHasBlackJack(true);
       setTurn(3);
+    } else if (turn == 21 && playerSplitHands.length != 0) {
+      setActiveHand(0);
     } else if (turn == 3) {
       let tmpDealerHand = [...dealerHand];
       tmpDealerHand.at(1).down = false;
@@ -124,34 +197,8 @@ function App() {
       setTurn(4);
     } else if (turn == 4) {
       await new Promise(r => setTimeout(r, 1000));
-      const winner = getWinners();
-      let moneyAmountUpdated = playerMoney;
-      if (winner == 1) {
-        const moneyWon = playerBet * (hasBlackJack ? 2.5 : 2);
-        moneyAmountUpdated += moneyWon;
-        handleOutcomeSnack((hasBlackJack ? 'BlackJack!' : 'Won') + '\t+' + moneyWon + '$', 1);
-        setPlayerMoney(moneyAmountUpdated);
-      } else if (winner == -1) {
-        handleOutcomeSnack('Loss \t-' + playerBet + '$', -1);
-        if (playerLost()) {
-          setTurn(-1);
-          setIsLost(true);
-          setPlayerHand([]);
-          setDealerHand([]);
-          cookies.set('playerMoney', moneyAmountUpdated, { path: '/' });
-          return;
-        }
-      } else {
-        handleOutcomeSnack('Draw', 0);
-        moneyAmountUpdated += playerBet;
-        setPlayerMoney(moneyAmountUpdated);
-      }
-      setTurn(0);
-      setIsInsured(false);
-      setHasBlackJack(false);
-      setPlayerHand([]);
-      setDealerHand([]);
-      cookies.set('playerMoney', moneyAmountUpdated, { path: '/' });
+      handleRoundOutcome();
+      handleEndRound();
     }
   }
 
@@ -164,13 +211,24 @@ function App() {
           <Hand name={"Dealer"} gameCards={dealerHand} />
         </Grid>
         <Grid item xs={12}>
-          <Hand name={"Player"} gameCards={playerHand} />
+          {
+            playerSplitHands.length == 0 ?
+              <Hand name={"Player"} gameCards={playerHand} />
+              :
+              <Stack spacing={2} direction="row" justifyContent="center">
+                {
+                  playerSplitHands.map((playerSplitHand, nb) => (
+                    <Hand key={nb + "splithand" + playerBet} name={"Player Hand " + (nb + 1)} gameCards={playerSplitHand} activeHand={activeHand == nb} />
+                  ))
+                }
+              </Stack>
+          }
         </Grid>
         <Grid item xs={12} md={2}>
           <PlayerInfos playerMoney={playerMoney} playerBet={playerBet} isInsured={isInsured} isLost={isLost} />
         </Grid>
         <Grid item xs={12} md={8}>
-          <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerMoney={playerMoney} setPlayerMoney={setPlayerMoney} playerHand={playerHand} setPlayerHand={setPlayerHand} setIsLost={setIsLost} />
+          <PlayerActions deck={deck} turn={turn} setTurn={setTurn} playerBet={playerBet} setPlayerBet={setPlayerBet} playerMoney={playerMoney} setPlayerMoney={setPlayerMoney} activeHand={activeHand} playerHand={playerHand} setActiveHand={setActiveHand} setPlayerHand={setPlayerHand} playerSplitHands={playerSplitHands} setPlayerSplitHands={setPlayerSplitHands} setIsLost={setIsLost} />
         </Grid>
         <Grid item xs={12} md={2}>
           <Statistics deck={deck} dealerHand={dealerHand} playerHand={playerHand} />

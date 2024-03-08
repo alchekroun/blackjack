@@ -17,3 +17,7 @@
 .playerActions button[disabled] {
     color: #0c1a02;
 }
+
+.playerActions button:hover {
+    border-color: #f57c00;
+}
