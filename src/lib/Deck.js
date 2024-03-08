@@ -98,7 +98,7 @@ class Deck {
         let hasAs = false;
         handCards.forEach(card => {
             score += card.down ? 0 : card.value;
-            hasAs = hasAs || card.face == 'ACE'
+            hasAs = hasAs || card.face == 'ace'
         });
         if (score > 21 && hasAs) {
             score -= 10;
@@ -111,8 +111,9 @@ class Deck {
     }
 
     static hasBlackJack(handCards) {
-        if (handCards[0] == 'ACE') return handCards[1] == 'king' || handCards[1] == 'queen' || handCards[1] == 'jack';
-        if (handCards[1] == 'ACE') return handCards[0] == 'king' || handCards[0] == 'queen' || handCards[0] == 'jack';
+        if (handCards[1].down) return false;
+        if (handCards[0].face == 'ace') return handCards[1].face == 'king' || handCards[1].face == 'queen' || handCards[1].face == 'jack';
+        if (handCards[1].face == 'ace') return handCards[0].face == 'king' || handCards[0].face == 'queen' || handCards[0].face == 'jack';
         return false;
     }
 
@@ -121,4 +122,4 @@ class Deck {
     }
 }
 
-export default Deck;
+export {Deck, Card};

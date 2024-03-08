@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Slider from '@mui/material/Slider';
 import { Box, Stack } from "@mui/material";
-import Deck from "../lib/Deck";
+import { Deck } from "../lib/Deck";
 
 import '../styles/details.css'
 
@@ -13,8 +13,8 @@ const PlayerActions = ({
     turn,
     playerBet,
     setPlayerBet,
-    playerCoins,
-    setPlayerCoins,
+    playerMoney,
+    setPlayerMoney,
     setTurn,
     playerHand,
     setPlayerHand,
@@ -30,7 +30,7 @@ const PlayerActions = ({
 
     const placeBet = () => {
         setPlayerBet(betToPlace);
-        setPlayerCoins(playerCoins - betToPlace);
+        setPlayerMoney(playerMoney - betToPlace);
         setTurn(1);
     }
 
@@ -49,14 +49,14 @@ const PlayerActions = ({
     const double = () => {
         if (turn == 2 && canDouble()) {
             setPlayerBet(playerBet * 2);
-            setPlayerCoins(playerCoins - playerBet);
+            setPlayerMoney(playerMoney - playerBet);
             setPlayerHand([...playerHand, deck.draw()]);
             setTurn(3);
         }
     }
 
     const canDouble = () => {
-        return Deck.canHit(playerHand) && (playerBet <= playerCoins);
+        return Deck.canHit(playerHand) && (playerBet <= playerMoney) && (playerHand.length == 2);
     }
 
     const split = () => {
@@ -81,7 +81,7 @@ const PlayerActions = ({
                             step={10}
                             valueLabelDisplay="auto"
                             onChange={(e) => setBetToPlace(e.target.value)}
-                            max={playerCoins}
+                            max={playerMoney}
                             min={MIN_BET}
                             color="warning"
                         />

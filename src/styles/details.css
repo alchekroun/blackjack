@@ -13,3 +13,7 @@
 .playerActions button {
     color: #f57c00;
 }
+
+.playerActions button[disabled] {
+    color: #0c1a02;
+}

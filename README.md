@@ -24,11 +24,8 @@ Used [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates
 ## To-do
 
 - Split
-- Insurence when ACE dealer face up card pops
-- Website style :white_check_mark:
-- Card Style :white_check_mark:
+- Insurence when ACE dealer face up card pops :white_check_mark:
 - Tips by the book
-- Probabilities of getting a ten :white_check_mark:
 - History and stats
 - Counting card practice
 - ..

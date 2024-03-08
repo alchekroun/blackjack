@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Box, Grid, Paper } from "@mui/material";
-import Deck from "../lib/Deck";
+import { Deck } from "../lib/Deck";
 
 import '../styles/details.css'
 
