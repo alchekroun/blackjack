@@ -48,7 +48,7 @@ const PracticeSetup = ({ cardsToDisplay, setCardsToDisplay: setCardsToDisplay, g
                                 step={1}
                                 onChange={(e) => setRefreshRateCards(e.target.value * 1000)}
                                 max={10}
-                                min={1}
+                                min={2}
                                 color="warning"
                                 sx={{ width: 100 }}
                                 defaultValue={refreshRateCards}
