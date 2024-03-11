@@ -29,7 +29,7 @@ const Statistics = ({ deck, dealerHand, playerHand }) => {
             <p>P_player(10) : {(getTenPlayerProba * 100).toFixed(2)} %</p>
             <p>P_dealer(10) : {(getTenDealerProba * 100).toFixed(2)} %</p>
             <p>Cards Left : {deck.shoe.length} - Cards Drawns : {deck.trash.length}</p>
-            <button>
+            <button className="action-button">
                 <img src="/settings_orange.svg" alt="logo-settings" width={25} height={25} />
             </button>
         </Box>

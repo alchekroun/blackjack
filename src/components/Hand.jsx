@@ -5,7 +5,7 @@ import { Deck } from "../lib/Deck";
 
 import '../styles/details.css'
 
-const Hand = ({ name, gameCards, activeHand = true }) => {
+const Hand = ({ name, gameCards, activeHand = true, displayScore = true }) => {
     const [handCards, setHandCards] = useState([]);
     const [score, setScore] = useState(0);
 
@@ -18,7 +18,7 @@ const Hand = ({ name, gameCards, activeHand = true }) => {
     return (
         <Box>
             <h3 style={{ color: activeHand ? '#FFF' : '#0c1a02' }}>{name}</h3>
-            <p>Score : {score}</p>
+            {displayScore ? <p>Score : {score}</p> : null}
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'center'

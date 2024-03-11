@@ -25,7 +25,7 @@ Used [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates
 ## To-do
 
 - Split :white_check_mark:
-- Tips by the book
-- History and stats
-- Counting card practice
+- Tips by the book :hourglass:
+- History and stats :hourglass:
+- Counting card practice :hammer:
 - ..

@@ -18,8 +18,8 @@ const ConfirmationDialog = ({ confiramtionMessage, showConfirmationDialog, setSh
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <button onClick={() => handleClose(true)}>Yes</button>
-                <button onClick={() => handleClose(false)}>No</button>
+                <button className="action-button" onClick={() => handleClose(true)}>Yes</button>
+                <button className="action-button" onClick={() => handleClose(false)}>No</button>
             </DialogActions>
         </Dialog>
     )

@@ -119,7 +119,7 @@ const PlayerActions = ({
                 {turn === 0 ?
                     <Stack spacing={2} direction="row" alignItems="center" sx={{ width: 200 }}>
                         <Slider
-                            defaultValue={20}
+                            defaultValue={playerBet}
                             step={10}
                             valueLabelDisplay="auto"
                             onChange={(e) => setBetToPlace(e.target.value)}
@@ -127,7 +127,7 @@ const PlayerActions = ({
                             min={MIN_BET}
                             color="warning"
                         />
-                        <button onClick={placeBet}>
+                        <button className="action-button" onClick={placeBet}>
                             Bet
                         </button>
                     </Stack>
@@ -137,16 +137,16 @@ const PlayerActions = ({
                 {
                     turn === 2 || turn === 21 ?
                         <Stack spacing={2} direction="row" alignItems="center" justifyContent="center" sx={{ width: 200 }}>
-                            <button onClick={hit} disabled={!Deck.canHit(getActiveHand())}>
+                            <button className="action-button" onClick={hit} disabled={!Deck.canHit(getActiveHand())}>
                                 Hit
                             </button>
-                            <button onClick={stay}>
+                            <button className="action-button" onClick={stay}>
                                 Stay
                             </button>
-                            <button onClick={double} disabled={!canDouble()}>
+                            <button className="action-button" onClick={double} disabled={!canDouble()}>
                                 Double
                             </button>
-                            <button onClick={split} disabled={!canSplit()}>
+                            <button className="action-button" onClick={split} disabled={!canSplit()}>
                                 Split
                             </button>
                         </Stack>
@@ -155,7 +155,7 @@ const PlayerActions = ({
                 }
                 {
                     turn === -1 ?
-                        <button onClick={rebuy}>
+                        <button className="action-button" onClick={rebuy}>
                             Rebuy
                         </button>
                         :
@@ -163,7 +163,7 @@ const PlayerActions = ({
                 }
             </Box>
             <Box>
-                <button onClick={() => deck.shuffle()}>
+                <button className="action-button" onClick={() => deck.shuffle()}>
                     Shuffle
                 </button>
             </Box>

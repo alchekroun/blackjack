@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Cookie from 'universal-cookie'
 import '../styles/App.css'
-
 import { Deck, Card } from '../lib/Deck';
 import PlayerActions from '../components/PlayerActions'
 import PlayerInfos from '../components/PlayerInfos'

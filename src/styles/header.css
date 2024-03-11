@@ -1,0 +1,11 @@
+header a {
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    color: #fff;
+    text-decoration: inherit;
+}
+
+header a:hover {
+    color: #f57c00;
+}
