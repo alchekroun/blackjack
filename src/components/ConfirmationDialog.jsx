@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText } from "@mui/material";
 
-const ConfirmationDialog = ({ confiramtionMessage, showConfirmationDialog, setShowConfirmationDialog, setResult}) => {
+const ConfirmationDialog = ({ confirmationMessage, showConfirmationDialog, setShowConfirmationDialog, setResult}) => {
 
     const handleClose = (value) => {
         setShowConfirmationDialog(false);
@@ -14,7 +14,7 @@ const ConfirmationDialog = ({ confiramtionMessage, showConfirmationDialog, setSh
         >
             <DialogContent>
                 <DialogContentText>
-                    {confiramtionMessage}
+                    {confirmationMessage}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

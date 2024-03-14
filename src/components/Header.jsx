@@ -6,7 +6,7 @@ const Header = () => {
         <header>
             <Stack direction='row' spacing={2} alignItems={"center"} justifyItems={"flex-start"}>
                 <img src="/svg-cards/jack_of_spades2.svg" alt="Logo" />
-                <span>BlackJack v0.4</span>
+                <span>BlackJack v0.5</span>
                 <a href='/'>Game</a>
                 <a href='/practice'>Counting Card Practice</a>
             </Stack>

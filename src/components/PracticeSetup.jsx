@@ -23,7 +23,6 @@ const PracticeSetup = ({ cardsToDisplay, setCardsToDisplay: setCardsToDisplay, g
                                 min={1}
                                 color="warning"
                                 sx={{ width: 100 }}
-                                defaultValue={cardsToDisplay}
                             />
                             <span>{cardsToDisplay}</span>
                             <button className="action-button" onClick={() => setGameLive(true)}>
@@ -51,7 +50,6 @@ const PracticeSetup = ({ cardsToDisplay, setCardsToDisplay: setCardsToDisplay, g
                                 min={2}
                                 color="warning"
                                 sx={{ width: 100 }}
-                                defaultValue={refreshRateCards}
                             />
                             <span>{refreshRateCards / 1000}s</span>
                         </Stack>
@@ -76,7 +74,6 @@ const PracticeSetup = ({ cardsToDisplay, setCardsToDisplay: setCardsToDisplay, g
                                 min={1}
                                 color="warning"
                                 sx={{ width: 100 }}
-                                defaultValue={timerQuizz}
                             />
                             <span>{timerQuizz / 1000}s</span>
                         </Stack>

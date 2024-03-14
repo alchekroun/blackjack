@@ -47,7 +47,7 @@ const BlackJackPage = () => {
         if (isInsured) {
             setPlayerMoney(playerMoney - (playerBet / 2));
         }
-    }, [isInsured])
+    }, [isInsured]);
 
     const handleOutcomeSnack = (message, type, delay = 2000) => {
         setOutcomeMessage(message);
@@ -227,7 +227,7 @@ const BlackJackPage = () => {
                 </Grid>
             </Grid>
             <InformationSnack informationMessage={outcomeMessage} showInformationSnack={showOutcomeSnack} setShowInformationSnack={setShowOutcomeSnack} informationMessageType={outcomeMessageType} />
-            <ConfirmationDialog confiramtionMessage={"Dealer has an Ace, do you want to take an insurance?"} showConfirmationDialog={showInsuranceConfirmation} setShowConfirmationDialog={setShowInsuranceConfirmation} setResult={setIsInsured} />
+            <ConfirmationDialog confirmationMessage={"Dealer has an Ace, do you want to take an insurance?"} showConfirmationDialog={showInsuranceConfirmation} setShowConfirmationDialog={setShowInsuranceConfirmation} setResult={setIsInsured} />
         </div>
     )
 
